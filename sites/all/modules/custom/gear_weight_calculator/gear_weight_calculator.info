@@ -1,7 +1,7 @@
-name = Gear Weight
-description = Calculates the weight of selected gear.
-package = My First Modules
+name = Gear Weight Calculator
+description = Adds up a set of weights. 
 core = 7.x
+package = Features
 version = 7.x-1.0
 dependencies[] = node
 dependencies[] = text
