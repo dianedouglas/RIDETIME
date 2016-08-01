@@ -1,0 +1,5 @@
+name = Gear Weight
+description = Calculates the weight of selected gear.
+package = My First Modules
+core = 7.x
+files[] = gearweight.module
