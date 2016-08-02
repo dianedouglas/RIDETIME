@@ -1,0 +1,5 @@
+name = gweight
+description = Adds the weights of gear together.
+package = Epicodus Examples
+core = 7.x
+files[] = gweight.module

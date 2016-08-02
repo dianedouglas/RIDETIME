@@ -1,0 +1,60 @@
+<?php
+
+function gweight_menu() {
+    $items['gweight'] = array(
+        'title' => 'Calculate Weight',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('gweight_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['gweight_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'gweight_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+//try and make a generated array.
+
+
+
+function gweight_form() {
+  $generate = array();
+  $generate[0] = 10;
+  $generate[1] = 17;
+
+  for ($i = 0; $i < count($generate); $i++){
+     echo 'generate value'.$generate[$i];
+    $form[$i] = array(
+      '#title' => 'Item '.$i, //make it easier to read. This should come from db eventually.
+      '#type' => 'textfield',
+      '#default_value' => $generate[$i],
+   );
+   echo $generate[$i];
+  }
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Calculate Sum',
+    );
+
+    return $form;
+}
+
+function gweight_form_submit($form, &$form_state) {
+    $first_number = $form_state['values']['item_1'];
+    $second_number = $form_state['values']['item_2'];
+    $gweight = $first_number + $second_number;
+    $_SESSION['gweight_output'] = $gweight;
+
+
+    $form_state['redirect'] = 'gweight_success_page';
+}
+
+function gweight_success() {
+    $answer = $_SESSION['gweight_output'];
+    return 'You calculated a weight! The answer is: ' . $answer;
+}

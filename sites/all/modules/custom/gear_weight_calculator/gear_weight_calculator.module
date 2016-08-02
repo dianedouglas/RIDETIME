@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Gear Weight Calculator feature.
- */
-
-include_once 'gear_weight_calculator.features.inc';
