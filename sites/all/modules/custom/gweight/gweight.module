@@ -1,4 +1,54 @@
 <?php
+//pull in data from db.
+function get_content_fields_array() {
+
+$list = node_type_get_names(); //1
+//var_dump($list);
+//echo $list['gear_post']; //this correctly gets 'Gear Post'
+//$type = $list['gear_post'];
+$field_list = field_info_instances('node', 'gear_post'); //2
+//var_dump($field_list); //
+$allFieldKeys = array_keys($field_list);
+$allValues = array_values($field_list);
+echo ($allFieldKeys[4]); //'field_weight'
+
+
+//echo ($allFieldKeys[4]['weight_value']);
+
+
+//echo($field_list['field_weight_value']);
+
+
+//1st. get the content types in a list.
+//2nd. pull the correct content type from that list.
+//3th. access that instance and look at the fields associated with it.
+//5th. pull the correct value from that instance.
+
+
+
+
+// foreach ($list as $key => $value) {
+//    $field_list = field_info_instances('node', $key); //get field list for content type
+//    $field_count =0;
+//    echo $key;
+//   // $field_max = count($field_list);
+//   //  foreach ($field_list as $field_key => $field_value) {
+//   //      if($field_count == 0) {
+//   //          $contenttypes [$type_count]['label'] = $value;
+//   //          $contenttypes [$type_count]['machine_name'] = $key;
+//   //      }
+//   //      $contenttypes [$type_count]['fields'][$file_field_count]['machine_name'] = $field_key;
+//   //      $contenttypes [$type_count]['fields'][$file_field_count]['field'] =  $field_value;
+//    //
+//   //      if($field_count == ($field_max -1)) {
+//   //              $type_count ++;
+//   //      }
+//   //      $field_count++;
+//   //  }
+// }
+
+// return $contenttypes;
+}
 
 function gweight_menu() {
     $items['gweight'] = array(
@@ -17,23 +67,18 @@ function gweight_menu() {
     return $items;
 }
 
-//try and make a generated array.
-
-
-
 function gweight_form() {
+    get_content_fields_array();
   $generate = array();
   $generate[0] = 10;
   $generate[1] = 17;
 
   for ($i = 0; $i < count($generate); $i++){
-     echo 'generate value'.$generate[$i];
     $form[$i] = array(
-      '#title' => 'Item '.$i, //make it easier to read. This should come from db eventually.
+      '#title' => 'Item '.$i, //make this easier to read. This should come from db eventually.
       '#type' => 'textfield',
       '#default_value' => $generate[$i],
    );
-   echo $generate[$i];
   }
 
     $form['submit'] = array(
@@ -45,8 +90,8 @@ function gweight_form() {
 }
 
 function gweight_form_submit($form, &$form_state) {
-    $first_number = $form_state['values']['item_1'];
-    $second_number = $form_state['values']['item_2'];
+    $first_number = $form_state['values']['0'];
+    $second_number = $form_state['values']['1'];
     $gweight = $first_number + $second_number;
     $_SESSION['gweight_output'] = $gweight;
 
