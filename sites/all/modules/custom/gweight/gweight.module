@@ -10,7 +10,7 @@ $field_list = field_info_instances('node', 'gear_post'); //2
 //var_dump($field_list); //
 $allFieldKeys = array_keys($field_list);
 $allValues = array_values($field_list);
-echo ($allFieldKeys[4]); //'field_weight'
+//echo ($allFieldKeys[4]['field']); //'field_weight'
 
 
 //echo ($allFieldKeys[4]['weight_value']);
@@ -23,6 +23,27 @@ echo ($allFieldKeys[4]); //'field_weight'
 //2nd. pull the correct content type from that list.
 //3th. access that instance and look at the fields associated with it.
 //5th. pull the correct value from that instance.
+
+$contenttypes = array();
+  $field_max = count($field_list);
+  $field_count =0;
+  $type_count =0;
+   foreach ($field_list as $field_key => $field_value) {
+      //  if($field_count == 0) {
+      //      $contenttypes [$type_count]['label'] = $value;
+      //      $contenttypes [$type_count]['machine_name'] = $key;
+      //  }
+       $contenttypes [$type_count]['fields'][$field_count]['machine_name'] = $field_key;
+       $contenttypes [$type_count]['fields'][$field_count]['field'] =  $field_value;
+
+       if($field_count == ($field_max -1)) {
+               $type_count ++;
+       }
+       $field_count++;
+   }
+   var_dump($contenttypes);
+    return $contenttypes;
+}
 
 
 
@@ -48,7 +69,7 @@ echo ($allFieldKeys[4]); //'field_weight'
 // }
 
 // return $contenttypes;
-}
+//}
 
 function gweight_menu() {
     $items['gweight'] = array(
