@@ -1,16 +1,7 @@
 <?php
 //pull in data from db.
-function get_content_fields_array() {
+function getWeights() {
 
-$list = node_type_get_names(); //1
-//var_dump($list);
-//echo $list['gear_post']; //this correctly gets 'Gear Post'
-//$type = $list['gear_post'];
-// $field_list = field_info_instances('node', 'gear_post'); //2
-// //var_dump($field_list); //
-// $allFieldKeys = array_keys($field_list);
-// $allValues = array_values($field_list);
-//echo ($allFieldKeys[4]['field']); //'field_weight'
 $query = new EntityFieldQuery();
 
 $query->entityCondition('entity_type', 'node')
@@ -25,11 +16,11 @@ if (!empty($result['node'])) {
 $weights = array();
   foreach ($nodes as $node) {
     // do something awesome);
-     $fields = field_view_field('node', $node, 'field_weight');
-    array_push ($weights, $fields[0]['#markup']);
-  }
+     $fields = field_view_field('node', $node, 'field_weight'); //pull
+    array_push ($weights, $fields[0]['#markup']); //push.
+    }
 }
-var_dump($weights);
+//var_dump($weights);
 return $weights;
 }
 
@@ -51,10 +42,7 @@ function gweight_menu() {
 }
 
 function gweight_form() {
-    get_content_fields_array();
-  $generate = array();
-  $generate[0] = 10;
-  $generate[1] = 17;
+  $generate = getWeights();
 
   for ($i = 0; $i < count($generate); $i++){
     $form[$i] = array(
@@ -77,8 +65,6 @@ function gweight_form_submit($form, &$form_state) {
     $second_number = $form_state['values']['1'];
     $gweight = $first_number + $second_number;
     $_SESSION['gweight_output'] = $gweight;
-
-
     $form_state['redirect'] = 'gweight_success_page';
 }
 
