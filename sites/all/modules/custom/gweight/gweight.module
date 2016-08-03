@@ -6,70 +6,32 @@ $list = node_type_get_names(); //1
 //var_dump($list);
 //echo $list['gear_post']; //this correctly gets 'Gear Post'
 //$type = $list['gear_post'];
-$field_list = field_info_instances('node', 'gear_post'); //2
-//var_dump($field_list); //
-$allFieldKeys = array_keys($field_list);
-$allValues = array_values($field_list);
+// $field_list = field_info_instances('node', 'gear_post'); //2
+// //var_dump($field_list); //
+// $allFieldKeys = array_keys($field_list);
+// $allValues = array_values($field_list);
 //echo ($allFieldKeys[4]['field']); //'field_weight'
+$query = new EntityFieldQuery();
 
+$query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'gear_post') //?
+  ->propertyCondition('status', 1);
 
-//echo ($allFieldKeys[4]['weight_value']);
+$result = $query->execute();
 
-
-//echo($field_list['field_weight_value']);
-
-
-//1st. get the content types in a list.
-//2nd. pull the correct content type from that list.
-//3th. access that instance and look at the fields associated with it.
-//5th. pull the correct value from that instance.
-
-$contenttypes = array();
-  $field_max = count($field_list);
-  $field_count =0;
-  $type_count =0;
-   foreach ($field_list as $field_key => $field_value) {
-      //  if($field_count == 0) {
-      //      $contenttypes [$type_count]['label'] = $value;
-      //      $contenttypes [$type_count]['machine_name'] = $key;
-      //  }
-       $contenttypes [$type_count]['fields'][$field_count]['machine_name'] = $field_key;
-       $contenttypes [$type_count]['fields'][$field_count]['field'] =  $field_value;
-
-       if($field_count == ($field_max -1)) {
-               $type_count ++;
-       }
-       $field_count++;
-   }
-   var_dump($contenttypes);
-    return $contenttypes;
+if (!empty($result['node'])) {
+  $nids = array_keys($result['node']);
+  $nodes = node_load_multiple($nids);
+$weights = array();
+  foreach ($nodes as $node) {
+    // do something awesome);
+     $fields = field_view_field('node', $node, 'field_weight');
+    array_push ($weights, $fields[0]['#markup']);
+  }
 }
-
-
-
-
-// foreach ($list as $key => $value) {
-//    $field_list = field_info_instances('node', $key); //get field list for content type
-//    $field_count =0;
-//    echo $key;
-//   // $field_max = count($field_list);
-//   //  foreach ($field_list as $field_key => $field_value) {
-//   //      if($field_count == 0) {
-//   //          $contenttypes [$type_count]['label'] = $value;
-//   //          $contenttypes [$type_count]['machine_name'] = $key;
-//   //      }
-//   //      $contenttypes [$type_count]['fields'][$file_field_count]['machine_name'] = $field_key;
-//   //      $contenttypes [$type_count]['fields'][$file_field_count]['field'] =  $field_value;
-//    //
-//   //      if($field_count == ($field_max -1)) {
-//   //              $type_count ++;
-//   //      }
-//   //      $field_count++;
-//   //  }
-// }
-
-// return $contenttypes;
-//}
+var_dump($weights);
+return $weights;
+}
 
 function gweight_menu() {
     $items['gweight'] = array(
